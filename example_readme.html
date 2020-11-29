@@ -1,0 +1,61 @@
+<h1>Radio Streams VLC</h1>
+<p><img alt="Radio Streams VLC" src="screen_capture.png" /></p>
+<p><code>radio_streams_vlc</code> is a VLC wrapper written in Python3, made available under <a href="https://opensource.org/licenses/MIT">MIT</a> license.</p>
+<p><code>station_selection()</code> wraps the <a href="https://en.wikipedia.org/wiki/VLC_media_player">VLC media player</a>, used as a command-line application to stream Internet radio.</p>
+<p>This script was tested with Python 3.6.9/PyPy 7.3.0.</p>
+<h2>.bashrc</h2>
+<pre><code>export PATH=&quot;$PATH:$HOME/scripts&quot;
+export PYTHONUSERDIR=&quot;$HOME&quot;
+</code></pre>
+<h2>Start the App</h2>
+<pre><code>$ /snap/bin/pypy3 radio_streams_vlc.py
+</code></pre>
+<p><code>station_selection()</code> has an <a href="https://docs.python.org/3/library/functions.html#open">open()</a> method which creates a text stream from a CSV database which will be used to generate a CSV <a href="https://docs.python.org/3/library/csv.html#csv.reader">reader</a> object for data base iteration.</p>
+<p>In the terminal emulator, first an ASCII banner prints, followed by a list of numbered Internet radio station descriptions. The numbers will be used by listeners to manually enter their choice where prompted.</p>
+<pre><code>for number, record in enumerate(_reader, 1):
+    print(f'{cyan}{number:&gt;2}{reset}  {yelo}{record[0]:}{reset}  {orng}{record[1]}{reset}')  # print radio station list
+    urls[number] = record[2]
+</code></pre>
+<p>The <code>enumerate(_reader, 1)</code> call generates station descriptions with numbers, starting at <code>1</code>. Which are appended to <code>urls</code> dictionary. The listener enters their choice, which is quickly grabbed from the object's hash table.</p>
+<h2>subprocess.run()</h2>
+<p>The <code>run()</code> method has a similar effect to sourcing a Bash shell script.</p>
+<blockquote>
+<p>If <em>check</em> is true, and the process exits with a non-zero exit code, a <a href="https://docs.python.org/3/library/subprocess.html#subprocess.CalledProcessError">CalledProcessError</a> exception will be raised. Attributes of that exception hold the arguments, the exit code, and stdout and stderr if they were captured.[1]</p>
+</blockquote>
+<pre><code class="language-python">run(['/snap/bin/vlc', '--intf', 'ncurses', urls[station_num]], check=True)
+</code></pre>
+<p>The Python instruction above becomes sourced in a Bash CLI, as demonstrated below:</p>
+<pre><code class="language-bash">$ /snap/bin/vlc --intf ncurses https://somafm.com/missioncontrol130.pls
+</code></pre>
+<h3>Banner</h3>
+<pre><code>:::::::..    :::.   :::::::-.  :::    ...     
+;;;;``;;;;   ;;`;;   ;;,   `';,;;; .;;;;;;;.    
+ [[[,/[[['  ,[[ '[[, `[[     [[[[[,[[     \[[,
+ $$$$$$c   c$$$cc$$$c $$,    $$$$$$$$,     $$$
+ 888b &quot;88bo,888   888,888_,o8P'888&quot;888,_ _,88P
+ MMMM   &quot;W&quot; YMM   &quot;&quot;` MMMMP&quot;`  MMM  &quot;YMMMMMP&quot;
+</code></pre>
+<p>The ASCII art above comes from <code>ascii_radio.txt</code> which was generated using <code>pyfiglet</code>. A <code>with open()</code> block was used to print the ASCII art from the text stream line by line.</p>
+<h2>Interface</h2>
+<p><code>--intf ncurses</code> displays a GUI in the terminal (press 'h' for the help display)</p>
+<h2>Desktop Launcher</h2>
+<p><img alt="Desktop Icon Image" src="radio_streams_vlc.png" /></p>
+<pre><code class="language-shell">[Desktop Entry]
+Version=1.1
+Type=Application
+Name=Radio Streams VLC
+GenericName=Radio Streams VLC
+Comment=Displays list of Internet radio stations to choose from.
+Icon=/usr/share/icons/foo/256x256/radio_streams_vlc.png
+TryExec=xterm
+Exec=xterm -fa &quot;monofur&quot; -fs 10 -geometry 90x60+0 -e /home/foo/scripts/radio_streams_vlc/radio_streams_vlc.py
+Path=/home/foo/scripts/radio_streams_vlc/
+Terminal=true
+Actions=
+Categories=Audio;Player;
+</code></pre>
+<p>To list available fonts: <code>fc-list | cut -f2 -d: | sort -u | grep -i Mono</code></p>
+<ol>
+<li>https://docs.python.org/3/library/subprocess.html#subprocess.run</li>
+</ol>
+<p><a href="https://ko-fi.com/XXXXXXXXX"><img alt="ko-fi" src="https://www.ko-fi.com/img/githubbutton_sm.svg" /></a></p>
