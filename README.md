@@ -5,7 +5,7 @@ Convert MD to HTML using Markdown along with web browser display
 
 ### Virtual Environment
 
-A Python virtual environment was originally used to develop this app. Basically, to make the `markdown` available.
+A Python virtual environment was originally used to develop this app. Basically, to make the `markdown` module available.
 
 ```
 Markdown==3.3.3
