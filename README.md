@@ -43,7 +43,7 @@ In a Unix-like OS, a **shebang** can be used with a Python executable text file 
 'Convert MD to HTML.'
 ```
 
-In the Python interactive browser, `__doc__` accesses the module's documentation.
+In the Python interactive shell, `__doc__` accesses the module's documentation.
 
 ### Module Imports
 
@@ -73,7 +73,7 @@ The keyword `def` begins the function defintion which defines `convert()` and ad
 'Convert MD to HTML from MD file.'
 ```
 
-In the Python interactive browser, `convert.__doc__` accesses the function's documentation.
+In the Python interactive shell, `convert.__doc__` accesses the function's documentation.
 
 ### markdown.markdownFromFile()
 
